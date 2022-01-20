@@ -5,12 +5,12 @@ using UnityEngine;
 public class AllyUnit : MonoBehaviour
 {
     public UnitScriptableObject astro;
-    [System.NonSerialized] public int HP;
+    public int HP;
     int HPMax;
     [System.NonSerialized] public int attDamage;
     int attRange;
-    int actionPoint;
-    int actionPointMax;
+    public int actionPoint;
+    public int actionPointMax;
     
     void Start()
     {
@@ -21,14 +21,12 @@ public class AllyUnit : MonoBehaviour
         attRange = astro.attRange;
         actionPoint = astro.actionPoint;
         actionPointMax = astro.actionPoint;
-    }
-    void Update()
-    {
         
     }
     public void DisplayInfo()
     {
-        UIManager.Instance.Select(name, HP, HPMax, actionPoint, actionPointMax, attDamage, astro.moveRange);
+        UIManager.Instance.Select(name, HP, HPMax, actionPoint, actionPointMax, attRange, attDamage, astro.moveRange);
+        UIManager.Instance.ActiveButon();
     }
     public void NewTurn()
     {
@@ -36,5 +34,14 @@ public class AllyUnit : MonoBehaviour
         if (GameManager.Instance.leftBorder > transform.position.x)
             Destroy(gameObject);
     }
-    //pour marquer les ennemis : faire un if et ne pas faire des qu'une coord est out
+    public void ChangeHealth(int damage)
+    {
+        HP -= damage;
+        if(HP < 1)
+        {
+            UIManager.Instance.UnSelect();
+            Destroy(gameObject); //pas propre faire un truc pour le clear de la liste du Gamemanager
+        }
+        DisplayInfo();
+    }
 }

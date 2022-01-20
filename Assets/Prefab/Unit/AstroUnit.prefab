@@ -69,6 +69,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   astro: {fileID: 11400000, guid: 8be6dc78832fa0c488c1063c84be6702, type: 2}
+  HP: 0
+  actionPoint: 0
+  actionPointMax: 0
 --- !u!1001 &2655034507997995835
 PrefabInstance:
   m_ObjectHideFlags: 0

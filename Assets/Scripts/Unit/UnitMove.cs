@@ -61,6 +61,8 @@ public class UnitMove : MonoBehaviour
 
     public void GoTo(Cell target)
     {
+        this.GetComponent<AllyUnit>().actionPoint--;
+        MouseManager.Instance.ChangeMouseState(MouseManager.MouseState.select);
         Cell start = currentCell;
         bool isValid = false, end = false; ;
         while (!isValid && !end)
@@ -98,6 +100,7 @@ public class UnitMove : MonoBehaviour
                 anim = animated[i].GetComponent<Animator>();
                 anim.SetTrigger("WalkCycle");
             }
+            CleanFreeCell();
         }
     }
     public void FreeCell()
@@ -106,17 +109,40 @@ public class UnitMove : MonoBehaviour
         {
             for (int y = 0; y <= unit.moveRange - x; y++)
             {
-                if (currentCell.X + x < 100 && currentCell.X - x >= 0 && currentCell.Y + y < 20 && currentCell.Y - y >= 0)
-                {
+                if(currentCell.X + x < 100 && currentCell.Y + y < 20)
                     if (!grid.grid[currentCell.X + x, currentCell.Y + y].isBlocked)
                         grid.grid[currentCell.X + x, currentCell.Y + y].SetIndic(true, acces);
+                if (currentCell.X - x >= 0 && currentCell.Y + y < 20)
                     if (!grid.grid[currentCell.X - x, currentCell.Y + y].isBlocked)
                         grid.grid[currentCell.X - x, currentCell.Y + y].SetIndic(true, acces);
+                if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
                     if (!grid.grid[currentCell.X + x, currentCell.Y - y].isBlocked)
                         grid.grid[currentCell.X + x, currentCell.Y - y].SetIndic(true, acces);
+                if (currentCell.X - x >= 0 && currentCell.Y - y >= 0)
                     if (!grid.grid[currentCell.X - x, currentCell.Y - y].isBlocked)
                         grid.grid[currentCell.X - x, currentCell.Y - y].SetIndic(true, acces);
-                }
+            }
+        }
+    }
+
+    public void CleanFreeCell()
+    {
+        for (int x = 0; x <= unit.moveRange; x++)
+        {
+            for (int y = 0; y <= unit.moveRange - x; y++)
+            {
+                if (currentCell.X + x < 100 && currentCell.Y + y < 20)
+                    if (!grid.grid[currentCell.X + x, currentCell.Y + y].isBlocked)
+                        grid.grid[currentCell.X + x, currentCell.Y + y].SetIndic(false, acces);
+                if (currentCell.X - x >= 0 && currentCell.Y + y < 20)
+                    if (!grid.grid[currentCell.X - x, currentCell.Y + y].isBlocked)
+                        grid.grid[currentCell.X - x, currentCell.Y + y].SetIndic(false, acces);
+                if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
+                    if (!grid.grid[currentCell.X + x, currentCell.Y - y].isBlocked)
+                        grid.grid[currentCell.X + x, currentCell.Y - y].SetIndic(false, acces);
+                if (currentCell.X - x >= 0 && currentCell.Y - y >= 0)
+                    if (!grid.grid[currentCell.X - x, currentCell.Y - y].isBlocked)
+                        grid.grid[currentCell.X - x, currentCell.Y - y].SetIndic(false, acces);
             }
         }
     }
@@ -127,22 +153,47 @@ public class UnitMove : MonoBehaviour
         {
             for (int y = 0; y <= unit.attRange - x; y++)
             {
-                if (currentCell.X + x < 100 && currentCell.X - x >= 0 &&
-                    currentCell.Y + y < 20 && currentCell.Y - y >= 0)
-                {
+                if(currentCell.X + x < 100 && currentCell.Y + y < 20)
                     if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell != null)
                         if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<EnemyUnit>() != null)
                             grid.grid[currentCell.X + x, currentCell.Y + y].SetIndic(true, enemy);
+                if(currentCell.X - x >= 0 && currentCell.Y + y < 20)
                     if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell != null)
                         if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<EnemyUnit>() != null)
                             grid.grid[currentCell.X - x, currentCell.Y + y].SetIndic(true, enemy);
+                if(currentCell.X + x < 100 && currentCell.Y - y >= 0)
                     if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell != null)
                         if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<EnemyUnit>() != null)
                             grid.grid[currentCell.X + x, currentCell.Y - y].SetIndic(true, enemy);
+                if(currentCell.X - x >= 0 && currentCell.Y - y >= 0)
                     if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell != null)
                         if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<EnemyUnit>() != null)
                             grid.grid[currentCell.X - x, currentCell.Y - y].SetIndic(true, enemy);
-                }
+            }
+        }
+    }
+    public void CleanInRange()
+    {
+        for (int x = 0; x <= unit.attRange; x++)
+        {
+            for (int y = 0; y <= unit.attRange - x; y++)
+            {
+                if (currentCell.X + x < 100 && currentCell.Y + y < 20)
+                    if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell != null)
+                        if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<EnemyUnit>() != null)
+                            grid.grid[currentCell.X + x, currentCell.Y + y].SetIndic(false, enemy);
+                if (currentCell.X - x >= 0 && currentCell.Y + y < 20)
+                    if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell != null)
+                        if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<EnemyUnit>() != null)
+                            grid.grid[currentCell.X - x, currentCell.Y + y].SetIndic(false, enemy);
+                if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
+                    if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell != null)
+                        if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<EnemyUnit>() != null)
+                            grid.grid[currentCell.X + x, currentCell.Y - y].SetIndic(false, enemy);
+                if (currentCell.X - x >= 0 && currentCell.Y - y >= 0)
+                    if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell != null)
+                        if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<EnemyUnit>() != null)
+                            grid.grid[currentCell.X - x, currentCell.Y - y].SetIndic(false, enemy);
             }
         }
     }

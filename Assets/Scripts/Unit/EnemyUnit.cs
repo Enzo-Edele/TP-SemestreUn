@@ -8,16 +8,26 @@ public class EnemyUnit : MonoBehaviour
     public GridPathFinding grid;
     Cell currentCell;
     List<Cell> pathList;
+
+    [SerializeField] List<int> patrolPointX;
+    [SerializeField] List<int> patrolPointY;
+    List<Cell> patrolPoint;
+    int currentPatrolPoint;
     //value pour aligner dans la direction du mouvement
     Vector3 posA = new Vector3();
     Vector3 posB = new Vector3();
 
-    public UnitScriptableObject alien;
-    public int HP;
+    [SerializeField] UnitScriptableObject alien;
+    int HP;
     int moveRange;
+    int movePoint;
     int actionPoint;
     int actionPointMax;
+    int attRange;
+    int attDamage;
 
+    [SerializeField] List<GameObject> animated;
+    //mettre un bool pour faire que 1 att par tour mettre un chase du joueur
     void Start()
     {
         Vector3 position = transform.position;
@@ -26,26 +36,52 @@ public class EnemyUnit : MonoBehaviour
         grid.grid[(int)position.x, (int)position.z].SetBlocker(true);
         pathList = new List<Cell>();
 
+        patrolPoint = new List<Cell>();
+        for(int i = 0; i < patrolPointX.Count; i++)
+        {
+            patrolPoint.Add(grid.grid[patrolPointX[i], patrolPointY[i]]);
+        }
+
+        SetDestination(patrolPoint[currentPatrolPoint]);
+
         name = alien.Name;
         HP = alien.HP;
         moveRange = alien.moveRange;
         actionPoint = alien.actionPoint;
         actionPointMax = alien.actionPoint;
+        movePoint = 0;
+        attRange = alien.attRange;
+        attDamage = alien.attDamage;
+
+        //code pour la liste GM
+        GameManager.Instance.enemyUnits.Add(this);
     }
     void Update()
     {
-        //mouv par tour : mettre une limite au nombre de fois ou on bouge d'une case
-        if (pathList.Count > 0 && actionPoint > 0) //while
+        if (pathList.Count > 0 && movePoint > 0)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 pathList[0].transform.position,
-                Time.deltaTime * 5);
+                Time.deltaTime * 1f);
             if (transform.position == pathList[0].transform.position)
             {
+                currentCell.onCell = null;
+                currentCell.SetBlocker(false);
                 currentCell = pathList[0];
+                currentCell.onCell = this.gameObject;
                 pathList.RemoveAt(0);
-                //actionPoint--;
+                movePoint--;
+                if(movePoint == 0)
+                {
+                    CheckActionLeft();
+                    Animator anim;
+                    for (int i = 0; i < animated.Count; i++)
+                    {
+                        anim = animated[i].GetComponent<Animator>();
+                        anim.SetTrigger("WalkCycle");//pour ennemy faire un bool car bug quand plusieur dep succesif(surtout si pair)
+                    }
+                }
             }
         }
 
@@ -58,52 +94,109 @@ public class EnemyUnit : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(dir);
     }
 
-    void Movement(Cell target)
+    public void NewTurn()
     {
-        //patrouille : mettre un liste de celle et quand on atteint un point on met le suivant en objectif (si bout de liste retour point 1)
-        //mouv par tour : mettre une limite au nombre de fois ou on bouge d'une case
-        Cell start = currentCell;
-        bool isValid = false, end = false; ;
-        while (!isValid && !end)
+        actionPoint = actionPointMax;
+        CheckActionLeft();
+        if (GameManager.Instance.rightBorder > transform.position.x)
         {
-            for (int x = 0; x <= moveRange; x++)
+            //activer ennemy
+        }
+    }
+    void CheckActionLeft()
+    {
+        if(actionPoint > 0)
+        {
+            for (int x = 0; x <= attRange; x++)
             {
-                for (int y = 0; y <= moveRange - x; y++)
+                for (int y = 0; y <= attRange - x; y++)
                 {
-                    if (target.X <= start.X + x && target.X >= start.X - x &&
-                        target.Y <= start.Y + y && target.Y >= start.Y - y)
-                    {
-                        isValid = true;
-                    }
-                    /*if (grid.grid[start.X + x, start.Y + y] != null) 
-                        grid.grid[start.X + x, start.Y + y].SetMaterial(grid.chosen);
-                    if (grid.grid[start.X - x, start.Y + y] != null) 
-                        grid.grid[start.X - x, start.Y + y].SetMaterial(grid.chosen);
-                    if (grid.grid[start.X + x, start.Y - y] != null) 
-                        grid.grid[start.X + x, start.Y - y].SetMaterial(grid.chosen);
-                    if (grid.grid[start.X - x, start.Y - y] != null) 
-                        grid.grid[start.X - x, start.Y - y].SetMaterial(grid.chosen); */
+                    if (currentCell.X + x < 100 && currentCell.Y + y < 20)
+                        if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell != null)
+                            if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>() != null)
+                            {
+                                Debug.Log("alien shot");
+                                Shoot(grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>());
+                                return;
+                            }
+                    if (currentCell.X - x >= 0 && currentCell.Y + y < 20)
+                        if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell != null)
+                            if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<AllyUnit>() != null)
+                            {
+                                Debug.Log("alien shot");
+                                Shoot(grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<AllyUnit>());
+                                return;
+                            }
+                    if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
+                        if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell != null)
+                            if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>() != null)
+                            {
+                                Debug.Log("alien shot");
+                                Shoot(grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>());
+                                return;
+                            }
+                    if (currentCell.X - x >= 0 && currentCell.Y - y >= 0)
+                        if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell != null)
+                            if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<AllyUnit>() != null)
+                            {
+                                Debug.Log("alien shot");
+                                Shoot(grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<AllyUnit>());
+                                return;
+                            }
                 }
             }
-            end = true;
+            Move();
         }
-        if (isValid)
+    }
+    void Shoot(AllyUnit target)
+    {
+        actionPoint--;
+        target.ChangeHealth(attDamage);
+        CheckActionLeft();
+    }
+    void SetDestination(Cell target)
+    {
+        Cell start = currentCell;
+        if (pathList.Count > 0) start = pathList[pathList.Count - 1];
+        pathList.AddRange(grid.PathFind(start, target));
+        if (currentPatrolPoint < patrolPoint.Count - 1)
         {
-            start.onCell = null;
-            target.onCell = this.gameObject;
-            if (pathList.Count > 0) start = pathList[pathList.Count - 1];
-            pathList.AddRange(grid.PathFind(start, target));
+            currentPatrolPoint++;
         }
-
+        else
+        {
+            currentPatrolPoint = 0;
+        }
         //essayer coroutine pour faire du unit by unit
-
-        void NewTurn()
+    }
+    void Move()
+    {
+        actionPoint--;
+        movePoint = moveRange;
+        if(pathList.Count == 0)
         {
-            actionPoint = actionPointMax;
-            if (GameManager.Instance.rightBorder > transform.position.x)
-            {
-                //activer ennemy
-            }
+            SetDestination(patrolPoint[currentPatrolPoint]);
         }
+        Animator anim;
+        for (int i = 0; i < animated.Count; i++)
+        {
+            anim = animated[i].GetComponent<Animator>();
+            anim.SetTrigger("WalkCycle");
+        }
+    }
+
+    public void ChangeHealth(int damage)
+    {
+        HP -= damage;
+        if (HP < 1)
+        {
+            //Death faire une anim et destroy GO
+            UIManager.Instance.UnSelect();
+        }
+        DisplayInfo();
+    }
+    public void DisplayInfo()
+    {
+        UIManager.Instance.Select(name, HP, alien.HP, actionPoint, actionPointMax, attRange, attDamage, moveRange);
     }
 }

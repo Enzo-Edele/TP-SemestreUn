@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] List<AllyUnit> playerUnits;
-    private List<EnemyUnit> enemyUnits;
+    public List<AllyUnit> playerUnits;  //numeroté les unit pour sup de la liste, idem pour enemy peut etre fait auto dans start
+    public List<EnemyUnit> enemyUnits; //numéroté et quand un alien meur check si il en reste pour 
     //list pour missile
 
     public int leftBorder, rightBorder;
@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
         leftBorder = 0;
         rightBorder = 20;
-        playerUnits = new List<AllyUnit>();
-        enemyUnits = new List<EnemyUnit>();
     }
     public void ChangeGameState(GameState state)
     {
@@ -51,8 +49,10 @@ public class GameManager : MonoBehaviour
     }
     public void AITurn()
     {
-        //activer les fonctions des ia 
-
+        for (int i = 0; i < enemyUnits.Count; i++)
+        {
+            enemyUnits[i].NewTurn();
+        }
         StartPlayerTurn();
     }
     void LunchMissile()

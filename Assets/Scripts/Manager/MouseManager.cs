@@ -28,21 +28,57 @@ public class MouseManager : MonoBehaviour
         {
             case MouseState.select:
                 break;
+                
             case MouseState.move:
+                if (select.GetComponent<UnitMove>() != null)
+                {
+                    select.GetComponent<UnitMove>().CleanInRange();
+                    select.GetComponent<UnitMove>().FreeCell();
+                }
                 break;
             case MouseState.shoot:
+                if (select.GetComponent<UnitMove>() != null)
+                {
+                    select.GetComponent<UnitMove>().CleanFreeCell();
+                    select.GetComponent<UnitMove>().InRange();
+                }
                 break;
         }
     }
 
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(1))
+        {
+            if (select != null)
+            {
+                if (select.GetComponent<UnitMove>() != null)
+                {
+                    select.GetComponent<UnitMove>().CleanFreeCell();
+                    select.GetComponent<UnitMove>().CleanInRange();
+                }
+                if (select != null) select = null;
+            }
+            ChangeMouseState(MouseState.select);
+            UIManager.Instance.UnSelect();
+        }
+    }
+    //un clic droit remet en mode select et forget last select (update maybe)
+
     public void Shoot(GameObject target)
     {
-        target.GetComponent<EnemyUnit>().HP -= select.GetComponent<AllyUnit>().attDamage; //mettre un truc pour la range genre check le mat
+        if (select.GetComponent<AllyUnit>().actionPoint > 0)
+        {
+            target.GetComponent<EnemyUnit>().ChangeHealth(select.GetComponent<AllyUnit>().attDamage);
+            select.GetComponent<AllyUnit>().actionPoint--;
+            ChangeMouseState(MouseState.select);
+        }
     }
 
     public void Select(GameObject unit)
     {
         select = unit;
         if(unit.GetComponent<AllyUnit>() != null) unit.GetComponent<AllyUnit>().DisplayInfo();
+        if (unit.GetComponent<EnemyUnit>() != null) unit.GetComponent<EnemyUnit>().DisplayInfo();
     }
 }

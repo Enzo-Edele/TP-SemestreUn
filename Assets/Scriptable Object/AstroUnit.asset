@@ -16,5 +16,5 @@ MonoBehaviour:
   HP: 3
   attDamage: 1
   attRange: 7
-  moveRange: 5
+  moveRange: 4
   actionPoint: 2

@@ -27,6 +27,12 @@ public class MouseManager : MonoBehaviour
         switch (mouseState)
         {
             case MouseState.select:
+                if(select != null)
+                    if (select.GetComponent<UnitMove>() != null)
+                    {
+                        select.GetComponent<UnitMove>().CleanInRange();
+                        select.GetComponent<UnitMove>().CleanFreeCell();
+                    }
                 break;
                 
             case MouseState.move:

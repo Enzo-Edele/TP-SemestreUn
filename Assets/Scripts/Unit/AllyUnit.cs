@@ -11,7 +11,8 @@ public class AllyUnit : MonoBehaviour
     int attRange;
     public int actionPoint;
     public int actionPointMax;
-    
+
+    int orderInList;
     void Start()
     {
         name = astro.Name;
@@ -21,7 +22,9 @@ public class AllyUnit : MonoBehaviour
         attRange = astro.attRange;
         actionPoint = astro.actionPoint;
         actionPointMax = astro.actionPoint;
-        
+
+        orderInList = GameManager.Instance.playerUnits.Count;
+        GameManager.Instance.playerUnits.Add(this);
     }
     public void DisplayInfo()
     {
@@ -40,7 +43,8 @@ public class AllyUnit : MonoBehaviour
         if(HP < 1)
         {
             UIManager.Instance.UnSelect();
-            Destroy(gameObject); //pas propre faire un truc pour le clear de la liste du Gamemanager
+            GameManager.Instance.playerUnits.RemoveAt(orderInList);
+            Destroy(gameObject);
         }
         DisplayInfo();
     }

@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject playerButon;
     [SerializeField] GameObject tutoPannel;
     [SerializeField] Text tutoText;
+    [SerializeField] GameObject alienTurnText;
     public static UIManager Instance { get; private set; }
     void Awake()
     {
@@ -44,6 +45,14 @@ public class UIManager : MonoBehaviour
     {
         infoPannel.SetActive(false);
         if (playerButon != null) playerButon.SetActive(false);
+    }
+    public void ActiveTurnText()
+    {
+        alienTurnText.SetActive(true);
+    }
+    public void DeactiveTurnText()
+    {
+        alienTurnText.SetActive(false);
     }
     public void ButtonNextTurn()
     {

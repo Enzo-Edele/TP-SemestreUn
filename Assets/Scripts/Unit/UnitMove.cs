@@ -62,7 +62,6 @@ public class UnitMove : MonoBehaviour
     public void GoTo(Cell target)
     {
         this.GetComponent<AllyUnit>().actionPoint--;
-        MouseManager.Instance.ChangeMouseState(MouseManager.MouseState.select);
         Cell start = currentCell;
         bool isValid = false, end = false; ;
         while (!isValid && !end)
@@ -94,6 +93,7 @@ public class UnitMove : MonoBehaviour
             target.onCell = this.gameObject;
             if (pathList.Count > 0) start = pathList[pathList.Count - 1];
             pathList.AddRange(grid.PathFind(start, target));
+            MouseManager.Instance.ChangeMouseState(MouseManager.MouseState.select);
             Animator anim;
             for (int i = 0; i < animated.Count; i++)
             {

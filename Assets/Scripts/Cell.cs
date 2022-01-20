@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public GameObject onCell = null;
-    public bool isBlocked; //{ get; set; }
+    public bool isBlocked { get; set; }
     public GameObject indic;
     public int X, Y;
     //object avec technique bougie pour sur l'unit select, les case valid de dep, les case ou ennemi dans la range
@@ -42,7 +42,7 @@ public class Cell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (onCell != null)
+        if (onCell != null && GameManager.Instance.aliensTurnEnd == 0)
         {
             if (MouseManager.mouseState == MouseManager.MouseState.select)
                 MouseManager.Instance.Select(onCell);
@@ -50,7 +50,7 @@ public class Cell : MonoBehaviour
             if (MouseManager.Instance.select != null && 
                 onCell.GetComponent<EnemyUnit>() != null && 
                 MouseManager.mouseState == MouseManager.MouseState.shoot &&
-                indic)
+                indic.activeSelf)
             {
                 MouseManager.Instance.Shoot(onCell);
                 MouseManager.Instance.select.GetComponent<UnitMove>().CleanInRange();
@@ -61,7 +61,7 @@ public class Cell : MonoBehaviour
                 if (MouseManager.Instance.select.GetComponent<AllyUnit>().actionPoint > 0 &&
                     MouseManager.mouseState == MouseManager.MouseState.move &&
                     onCell == null &&
-                    indic)
+                    indic.activeSelf)
                 {
                     MouseManager.Instance.select.GetComponent<UnitMove>().GoTo(this);
                 }

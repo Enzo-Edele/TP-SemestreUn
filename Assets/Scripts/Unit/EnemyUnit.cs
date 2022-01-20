@@ -8,7 +8,7 @@ public class EnemyUnit : MonoBehaviour
     public GridPathFinding grid;
     Cell currentCell;
     List<Cell> pathList;
-
+    //assigne un chemin de patrouille au enemy
     [SerializeField] List<int> patrolPointX;
     [SerializeField] List<int> patrolPointY;
     List<Cell> patrolPoint;
@@ -27,7 +27,7 @@ public class EnemyUnit : MonoBehaviour
     int attDamage;
 
     [SerializeField] List<GameObject> animated;
-    //mettre un bool pour faire que 1 att par tour mettre un chase du joueur
+    int orderInList;
     void Start()
     {
         Vector3 position = transform.position;
@@ -53,7 +53,7 @@ public class EnemyUnit : MonoBehaviour
         attRange = alien.attRange;
         attDamage = alien.attDamage;
 
-        //code pour la liste GM
+        orderInList = GameManager.Instance.enemyUnits.Count;
         GameManager.Instance.enemyUnits.Add(this);
     }
     void Update()
@@ -147,6 +147,10 @@ public class EnemyUnit : MonoBehaviour
             }
             Move();
         }
+        else
+        {
+            GameManager.Instance.aliensTurnEnd--;
+        }
     }
     void Shoot(AllyUnit target)
     {
@@ -190,7 +194,7 @@ public class EnemyUnit : MonoBehaviour
         HP -= damage;
         if (HP < 1)
         {
-            //Death faire une anim et destroy GO
+            GameManager.Instance.enemyUnits.RemoveAt(orderInList);
             UIManager.Instance.UnSelect();
         }
         DisplayInfo();

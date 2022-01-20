@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public int leftBorder, rightBorder;
 
+    bool isAIPlaying;
+    public int aliensTurnEnd = 0;
     public static GameManager Instance { get; private set; }
 
     public enum GameState
@@ -25,6 +27,14 @@ public class GameManager : MonoBehaviour
         Instance = this;
         leftBorder = 0;
         rightBorder = 20;
+    }
+    private void Update()
+    {
+        if(isAIPlaying && aliensTurnEnd == 0)
+        {
+            StartPlayerTurn();
+            isAIPlaying = false;
+        }
     }
     public void ChangeGameState(GameState state)
     {
@@ -46,14 +56,24 @@ public class GameManager : MonoBehaviour
         {
             playerUnits[i].NewTurn();
         }
+        UIManager.Instance.DeactiveTurnText();
     }
     public void AITurn()
     {
+        UIManager.Instance.ActiveTurnText();
+        UIManager.Instance.UnSelect();
+        MouseManager.Instance.ChangeMouseState(MouseManager.MouseState.select);
+        aliensTurnEnd = enemyUnits.Count;
+        isAIPlaying = true;
         for (int i = 0; i < enemyUnits.Count; i++)
         {
             enemyUnits[i].NewTurn();
         }
-        StartPlayerTurn();
+        for (int i = 0; i < playerUnits.Count; i++)
+        {
+            playerUnits[i].actionPoint = 0;
+        }
+        //StartPlayerTurn(); //le mettre a part aprés vérif que IA est one mettre le check dans check action point
     }
     void LunchMissile()
     {

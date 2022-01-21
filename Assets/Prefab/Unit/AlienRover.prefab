@@ -49,6 +49,7 @@ MonoBehaviour:
   patrolPointY: 0b0000000b000000
   projectile: {fileID: 7317763894057566859, guid: d529afd63bdc7044089ed498b07bed2f, type: 3}
   alien: {fileID: 11400000, guid: e9bbddd0b7b52ec40a788275e0a653d0, type: 2}
+  speed: 5
   animated:
   - {fileID: 2654157357643326792}
 --- !u!1001 &6195394538732771371

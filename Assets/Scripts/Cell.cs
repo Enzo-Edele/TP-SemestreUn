@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public GameObject onCell = null;
-    public bool isBlocked { get; set; }
+    public bool isBlocked{ get; set; }
     public GameObject indic;
     public int X, Y;
     //idée pour indiquer les cases : faire en objet en utilisant technique de la bougie

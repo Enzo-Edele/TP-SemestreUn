@@ -8,7 +8,7 @@ public class EnemyUnit : MonoBehaviour
     public GridPathFinding grid;
     Cell currentCell;
     List<Cell> pathList;
-    //assigne un chemin de patrouille au enemy
+    //assigne un chemin de patrouille au enemy ATTENTION mettre au moint 2 destination différente l'ia joue son tour indéfiniment
     [SerializeField] List<int> patrolPointX;
     [SerializeField] List<int> patrolPointY;
     List<Cell> patrolPoint;
@@ -27,6 +27,7 @@ public class EnemyUnit : MonoBehaviour
     int actionPointMax;
     int attRange;
     int attDamage;
+    [SerializeField] float speed;
 
     [SerializeField] List<GameObject> animated;
     int orderInList;
@@ -65,7 +66,7 @@ public class EnemyUnit : MonoBehaviour
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 pathList[0].transform.position,
-                Time.deltaTime * 1f);
+                Time.deltaTime * speed);
             if (transform.position == pathList[0].transform.position)
             {
                 currentCell.onCell = null;
@@ -74,14 +75,24 @@ public class EnemyUnit : MonoBehaviour
                 currentCell.onCell = this.gameObject;
                 pathList.RemoveAt(0);
                 movePoint--;
-                if(movePoint == 0)
+                if(pathList.Count == 0)
                 {
                     CheckActionLeft();
                     Animator anim;
                     for (int i = 0; i < animated.Count; i++)
                     {
                         anim = animated[i].GetComponent<Animator>();
-                        anim.SetTrigger("WalkCycle"); //si probléme plus tard passer par un bool peut aider
+                        anim.SetBool("WalkCycle", false);
+                    }
+                }
+                else if(movePoint == 0)
+                {
+                    CheckActionLeft();
+                    Animator anim;
+                    for (int i = 0; i < animated.Count; i++)
+                    {
+                        anim = animated[i].GetComponent<Animator>();
+                        anim.SetBool("WalkCycle", false);
                     }
                 }
             }
@@ -113,7 +124,7 @@ public class EnemyUnit : MonoBehaviour
             {
                 for (int y = 0; y <= attRange - x; y++)
                 {
-                    if (currentCell.X + x < 100 && currentCell.Y + y < 20)
+                    if (currentCell.X + x < 30 && currentCell.Y + y < 20) //remplacé le 20 et le 30 que si on change size grid ca fais tjr
                         if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell != null)
                             if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>() != null)
                             {
@@ -131,7 +142,7 @@ public class EnemyUnit : MonoBehaviour
                                     currentCell.Y + y);
                                 return;
                             }
-                    if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
+                    if (currentCell.X + x < 30 && currentCell.Y - y >= 0)
                         if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell != null)
                             if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>() != null)
                             {
@@ -193,7 +204,7 @@ public class EnemyUnit : MonoBehaviour
         for (int i = 0; i < animated.Count; i++)
         {
             anim = animated[i].GetComponent<Animator>();
-            anim.SetTrigger("WalkCycle");
+            anim.SetBool("WalkCycle", true);
         }
     }
 

@@ -63,7 +63,7 @@ public class GridPathFinding : MonoBehaviour
             Node<Cell> current = frontier.PopMin();
             Cell cell = current.content;
             cell.visited = true;
-            //cell.SetMaterial(visited); //a virer
+            //cell.SetMaterial(visited); //pour debug
             if (cell == target) break;
 
             foreach (Cell neigh in cell.neighbors)

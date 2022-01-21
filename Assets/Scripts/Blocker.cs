@@ -7,7 +7,6 @@ public class Blocker : MonoBehaviour
     public GridPathFinding grid;
     void Start()
     {
-        Vector3 position = transform.position;
-        grid.grid[(int)position.x, (int)position.z].SetBlocker(true);
+        grid.grid[(int)transform.position.x, (int)transform.position.z].SetBlocker(true);
     }
 }

@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text attack;
     [SerializeField] Text move;
 
+    [SerializeField] Button nextTurnButon;
     [SerializeField] GameObject playerButon;
     [SerializeField] GameObject tutoPannel;
     [SerializeField] Text tutoText;
@@ -55,10 +56,12 @@ public class UIManager : MonoBehaviour
     public void ActiveTurnText()
     {
         alienTurnText.SetActive(true);
+        nextTurnButon.interactable = false;
     }
     public void DeactiveTurnText()
     {
         alienTurnText.SetActive(false);
+        nextTurnButon.interactable = true;
     }
     public void ActiveGameOver()
     {

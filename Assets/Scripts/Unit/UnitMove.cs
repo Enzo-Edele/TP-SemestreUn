@@ -100,6 +100,7 @@ public class UnitMove : MonoBehaviour
                 anim.SetTrigger("WalkCycle");
             }
             CleanFreeCell();
+            this.gameObject.GetComponent<AllyUnit>().DisplayInfo();
         }
     }
     public void FreeCell()

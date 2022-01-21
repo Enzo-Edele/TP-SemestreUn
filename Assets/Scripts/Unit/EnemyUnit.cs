@@ -30,7 +30,7 @@ public class EnemyUnit : MonoBehaviour
     [SerializeField] float speed;
 
     [SerializeField] List<GameObject> animated;
-    int orderInList;
+    public int orderInList;
     void Start()
     {
         Vector3 position = transform.position;
@@ -213,12 +213,12 @@ public class EnemyUnit : MonoBehaviour
         HP -= damage;
         if (HP < 1)
         {
-            GameManager.Instance.enemyUnits.RemoveAt(orderInList);
+            GameManager.Instance.enemyUnits.Remove(this);
             UIManager.Instance.UnSelect();
             GameManager.Instance.CheckEnemyCount();
             Destroy(gameObject);
         }
-        DisplayInfo();
+        //DisplayInfo();
     }
     public void DisplayInfo()
     {

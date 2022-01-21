@@ -36,17 +36,25 @@ public class MouseManager : MonoBehaviour
                 break;
                 
             case MouseState.move:
-                if (select.GetComponent<UnitMove>() != null)
+                if (select.GetComponent<UnitMove>() != null && select.GetComponent<AllyUnit>())
                 {
-                    select.GetComponent<UnitMove>().CleanInRange();
-                    select.GetComponent<UnitMove>().FreeCell();
+                    if (select.GetComponent<AllyUnit>().actionPoint > 0)
+                    {
+                        select.GetComponent<UnitMove>().CleanInRange();
+                        select.GetComponent<UnitMove>().FreeCell();
+                    }
+                    else ChangeMouseState(MouseState.select);
                 }
                 break;
             case MouseState.shoot:
-                if (select.GetComponent<UnitMove>() != null)
+                if (select.GetComponent<UnitMove>() != null && select.GetComponent<AllyUnit>())
                 {
-                    select.GetComponent<UnitMove>().CleanFreeCell();
-                    select.GetComponent<UnitMove>().InRange();
+                    if (select.GetComponent<AllyUnit>().actionPoint > 0)
+                    {
+                        select.GetComponent<UnitMove>().CleanFreeCell();
+                        select.GetComponent<UnitMove>().InRange();
+                    }
+                    else ChangeMouseState(MouseState.select);
                 }
                 break;
         }
@@ -82,6 +90,7 @@ public class MouseManager : MonoBehaviour
                                                     select.GetComponent<AllyUnit>().gameObject.transform.position.z),
                                         Quaternion.identity);
             go.GetComponent<Projectile>().SetTarget((int)target.transform.position.x, (int)target.transform.position.z);
+            select.GetComponent<AllyUnit>().DisplayInfo();
             ChangeMouseState(MouseState.select);
         }
     }
@@ -90,6 +99,10 @@ public class MouseManager : MonoBehaviour
     {
         select = unit;
         if(unit.GetComponent<AllyUnit>() != null) unit.GetComponent<AllyUnit>().DisplayInfo();
-        if (unit.GetComponent<EnemyUnit>() != null) unit.GetComponent<EnemyUnit>().DisplayInfo();
+        if (unit.GetComponent<EnemyUnit>() != null)
+        {
+            UIManager.Instance.UnSelect();
+            unit.GetComponent<EnemyUnit>().DisplayInfo();
+        }
     }
 }

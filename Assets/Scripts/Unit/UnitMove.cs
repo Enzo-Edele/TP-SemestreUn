@@ -75,7 +75,7 @@ public class UnitMove : MonoBehaviour
                     {
                         isValid = true;
                     }
-                    /*if (start.X + x < 100 && start.X - x >= 0 && start.Y + y < 20 && start.Y - y >= 0)
+                    /*if (start.X + x < 100 && start.X - x >= 0 && start.Y + y < 20 && start.Y - y >= 0) //pour le debug
                     {
                         grid.grid[start.X + x, start.Y + y].SetMaterial(grid.chosen);
                         grid.grid[start.X - x, start.Y + y].SetMaterial(grid.chosen);

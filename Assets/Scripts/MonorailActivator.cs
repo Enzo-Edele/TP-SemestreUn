@@ -22,5 +22,5 @@ public class MonorailActivator : MonoBehaviour
             currentWagon++;
         }
     }
-    //why not faire un truc qui génére des rames de monorail random
+    //idée : faire un truc qui génére des rames de monorail random
 }

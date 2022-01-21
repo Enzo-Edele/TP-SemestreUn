@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public int leftBorder, rightBorder;
 
-    bool isAIPlaying;
+    public bool isAIPlaying;
     public int aliensTurnEnd = 0;
     public static GameManager Instance { get; private set; }
 
@@ -73,7 +73,20 @@ public class GameManager : MonoBehaviour
         {
             playerUnits[i].actionPoint = 0;
         }
-        //StartPlayerTurn(); //le mettre a part aprés vérif que IA est one mettre le check dans check action point
+    }
+    public void CheckEnemyCount()
+    {
+        if(enemyUnits.Count < 1)
+        {
+            UIManager.Instance.ActiveWin();
+        }
+    }
+    public void CheckAllyCount()
+    {
+        if (playerUnits.Count < 1)
+        {
+            UIManager.Instance.ActiveGameOver();
+        }
     }
     void LunchMissile()
     {

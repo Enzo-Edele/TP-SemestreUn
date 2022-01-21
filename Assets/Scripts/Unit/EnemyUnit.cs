@@ -17,6 +17,8 @@ public class EnemyUnit : MonoBehaviour
     Vector3 posA = new Vector3();
     Vector3 posB = new Vector3();
 
+    [SerializeField] GameObject projectile;
+
     [SerializeField] UnitScriptableObject alien;
     int HP;
     int moveRange;
@@ -79,7 +81,7 @@ public class EnemyUnit : MonoBehaviour
                     for (int i = 0; i < animated.Count; i++)
                     {
                         anim = animated[i].GetComponent<Animator>();
-                        anim.SetTrigger("WalkCycle");//pour ennemy faire un bool car bug quand plusieur dep succesif(surtout si pair)
+                        anim.SetTrigger("WalkCycle"); //si probléme plus tard passer par un bool peut aider
                     }
                 }
             }
@@ -115,32 +117,36 @@ public class EnemyUnit : MonoBehaviour
                         if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell != null)
                             if (grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>() != null)
                             {
-                                Debug.Log("alien shot");
-                                Shoot(grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>());
+                                Shoot(grid.grid[currentCell.X + x, currentCell.Y + y].onCell.GetComponent<AllyUnit>(),
+                                    currentCell.X + x,
+                                    currentCell.Y + y);
                                 return;
                             }
                     if (currentCell.X - x >= 0 && currentCell.Y + y < 20)
                         if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell != null)
                             if (grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<AllyUnit>() != null)
                             {
-                                Debug.Log("alien shot");
-                                Shoot(grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<AllyUnit>());
+                                Shoot(grid.grid[currentCell.X - x, currentCell.Y + y].onCell.GetComponent<AllyUnit>(),
+                                    currentCell.X - x,
+                                    currentCell.Y + y);
                                 return;
                             }
                     if (currentCell.X + x < 100 && currentCell.Y - y >= 0)
                         if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell != null)
                             if (grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>() != null)
                             {
-                                Debug.Log("alien shot");
-                                Shoot(grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>());
+                                Shoot(grid.grid[currentCell.X + x, currentCell.Y - y].onCell.GetComponent<AllyUnit>(),
+                                    currentCell.X + x,
+                                    currentCell.Y - y);
                                 return;
                             }
                     if (currentCell.X - x >= 0 && currentCell.Y - y >= 0)
                         if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell != null)
                             if (grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<AllyUnit>() != null)
                             {
-                                Debug.Log("alien shot");
-                                Shoot(grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<AllyUnit>());
+                                Shoot(grid.grid[currentCell.X - x, currentCell.Y - y].onCell.GetComponent<AllyUnit>(),
+                                    currentCell.X - x,
+                                    currentCell.Y - y);
                                 return;
                             }
                 }
@@ -152,10 +158,12 @@ public class EnemyUnit : MonoBehaviour
             GameManager.Instance.aliensTurnEnd--;
         }
     }
-    void Shoot(AllyUnit target)
+    void Shoot(AllyUnit target, int x, int y)
     {
         actionPoint--;
         target.ChangeHealth(attDamage);
+        GameObject go = Instantiate(projectile, new Vector3(posA.x, 0, posA.z), Quaternion.identity);
+        go.GetComponent<Projectile>().SetTarget(x, y);
         CheckActionLeft();
     }
     void SetDestination(Cell target)
@@ -171,7 +179,7 @@ public class EnemyUnit : MonoBehaviour
         {
             currentPatrolPoint = 0;
         }
-        //essayer coroutine pour faire du unit by unit
+        //idée : essayer coroutine pour faire du unit by unit
     }
     void Move()
     {
@@ -196,6 +204,8 @@ public class EnemyUnit : MonoBehaviour
         {
             GameManager.Instance.enemyUnits.RemoveAt(orderInList);
             UIManager.Instance.UnSelect();
+            GameManager.Instance.CheckEnemyCount();
+            Destroy(gameObject);
         }
         DisplayInfo();
     }

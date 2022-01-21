@@ -69,7 +69,6 @@ public class MouseManager : MonoBehaviour
             UIManager.Instance.UnSelect();
         }
     }
-    //un clic droit remet en mode select et forget last select (update maybe)
 
     public void Shoot(GameObject target)
     {
@@ -77,6 +76,12 @@ public class MouseManager : MonoBehaviour
         {
             target.GetComponent<EnemyUnit>().ChangeHealth(select.GetComponent<AllyUnit>().attDamage);
             select.GetComponent<AllyUnit>().actionPoint--;
+            GameObject go = Instantiate(select.GetComponent<AllyUnit>().projectile,
+                                        new Vector3(select.GetComponent<AllyUnit>().gameObject.transform.position.x,
+                                                    0,
+                                                    select.GetComponent<AllyUnit>().gameObject.transform.position.z),
+                                        Quaternion.identity);
+            go.GetComponent<Projectile>().SetTarget((int)target.transform.position.x, (int)target.transform.position.z);
             ChangeMouseState(MouseState.select);
         }
     }

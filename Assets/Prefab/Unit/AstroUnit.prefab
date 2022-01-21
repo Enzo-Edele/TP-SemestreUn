@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ee155f137f9c847b8eab326d722b0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectile: {fileID: 7317763894057566859, guid: d529afd63bdc7044089ed498b07bed2f, type: 3}
   astro: {fileID: 11400000, guid: 8be6dc78832fa0c488c1063c84be6702, type: 2}
   HP: 0
   actionPoint: 0

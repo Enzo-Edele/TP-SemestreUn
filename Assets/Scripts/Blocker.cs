@@ -10,9 +10,4 @@ public class Blocker : MonoBehaviour
         Vector3 position = transform.position;
         grid.grid[(int)position.x, (int)position.z].SetBlocker(true);
     }
-
-    void Update()
-    {
-
-    }
 }

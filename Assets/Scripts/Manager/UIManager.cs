@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject tutoPannel;
     [SerializeField] Text tutoText;
     [SerializeField] GameObject alienTurnText;
+
+    [SerializeField] GameObject gameOverPannel;
+    [SerializeField] GameObject gameOverText;
+    [SerializeField] GameObject winPannel;
+    [SerializeField] GameObject winText;
     public static UIManager Instance { get; private set; }
     void Awake()
     {
@@ -54,9 +60,29 @@ public class UIManager : MonoBehaviour
     {
         alienTurnText.SetActive(false);
     }
+    public void ActiveGameOver()
+    {
+        gameOverPannel.SetActive(true);
+        gameOverText.SetActive(true);
+    }
+    public void DeactiveGameOver()
+    {
+        if (gameOverPannel != null) gameOverPannel.SetActive(false);
+        if (gameOverText != null) gameOverText.SetActive(false);
+    }
+    public void ActiveWin()
+    {
+        winPannel.SetActive(true);
+        winText.SetActive(true);
+    }
+    public void DeactiveWin()
+    {
+        if (winPannel != null) winPannel.SetActive(false);
+        if (winText != null) winText.SetActive(false);
+    }
     public void ButtonNextTurn()
     {
-        GameManager.Instance.AITurn();
+        if(!GameManager.Instance.isAIPlaying) GameManager.Instance.AITurn();
     }
     public void ButtonMove()
     {
@@ -70,6 +96,7 @@ public class UIManager : MonoBehaviour
     }
     public void ButtonTuto()
     {
+        UnSelect();
         if (tutoPannel.activeSelf)
         {
             tutoPannel.SetActive(false);
@@ -80,5 +107,15 @@ public class UIManager : MonoBehaviour
             tutoPannel.SetActive(true);
             tutoText.text = "Close";
         }
+    }
+    public void ButtonRestart()
+    {
+        DeactiveGameOver();
+        DeactiveWin();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void ButtonQuit()
+    {
+        Application.Quit();
     }
 }

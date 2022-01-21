@@ -8,7 +8,7 @@ public class GridPathFinding : MonoBehaviour
     public Vector2Int sizeGrid;
     public Cell[,] grid;
 
-    public Material basic, visited, chosen; //a virer pour la fin
+    public Material basic, visited, chosen; //utile pour debug
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class GridPathFinding : MonoBehaviour
             {
                 Cell c = grid[x, y];
                 c.visited = false;
-                //c.SetMaterial(basic); //a virer
+                //c.SetMaterial(basic); //pour debug
                 c.node = null;
                 c.parent = null;
             }
@@ -89,11 +89,11 @@ public class GridPathFinding : MonoBehaviour
         while (currentCell.parent != null)
         {
             res.Add(currentCell);
-            //currentCell.SetMaterial(chosen); //a virer
+            //currentCell.SetMaterial(chosen); //pour debug
             currentCell = currentCell.parent;
             if (currentCell.parent == null)
             {
-                //currentCell.SetMaterial(chosen); //a virer
+                //currentCell.SetMaterial(chosen); //pour debug
             }
         }
         res.Reverse();

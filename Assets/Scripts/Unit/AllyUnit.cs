@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AllyUnit : MonoBehaviour
 {
+    public GameObject projectile;
+
     public UnitScriptableObject astro;
     public int HP;
     int HPMax;
@@ -44,6 +46,7 @@ public class AllyUnit : MonoBehaviour
         {
             UIManager.Instance.UnSelect();
             GameManager.Instance.playerUnits.RemoveAt(orderInList);
+            GameManager.Instance.CheckAllyCount();
             Destroy(gameObject);
         }
         DisplayInfo();

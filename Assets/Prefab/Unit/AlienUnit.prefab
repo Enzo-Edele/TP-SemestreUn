@@ -50,6 +50,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   patrolPointX: 07000000050000000500000007000000
   patrolPointY: 05000000050000000700000007000000
+  projectile: {fileID: 7317763894057566859, guid: d529afd63bdc7044089ed498b07bed2f, type: 3}
   alien: {fileID: 11400000, guid: aac074751badc824891544d1f747c808, type: 2}
   animated:
   - {fileID: 7690254939109455118}

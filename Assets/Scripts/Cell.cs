@@ -8,7 +8,7 @@ public class Cell : MonoBehaviour
     public bool isBlocked { get; set; }
     public GameObject indic;
     public int X, Y;
-    //object avec technique bougie pour sur l'unit select, les case valid de dep, les case ou ennemi dans la range
+    //idée pour indiquer les cases : faire en objet en utilisant technique de la bougie
 
     //value for pathfinding
     [System.NonSerialized] public bool visited;
@@ -26,7 +26,7 @@ public class Cell : MonoBehaviour
     public void SetBlocker(bool blocker)
     {
         isBlocked = blocker;
-        //indic.SetActive(blocker);
+        //indic.SetActive(blocker); //pour debug
     }
 
     public void SetIndic(bool active, Material mat)
@@ -42,7 +42,7 @@ public class Cell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (onCell != null && GameManager.Instance.aliensTurnEnd == 0)
+        if (onCell != null && !GameManager.Instance.isAIPlaying)
         {
             if (MouseManager.mouseState == MouseManager.MouseState.select)
                 MouseManager.Instance.Select(onCell);

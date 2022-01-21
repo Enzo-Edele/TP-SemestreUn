@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//note : cours du 19/01 passé par une classe tierce plutot que stocké les data dans la cell
 public class Cell : MonoBehaviour
 {
     public GameObject onCell = null;
-    public bool isBlocked{ get; set; }
+    public bool isBlocked { get; set; }
     public GameObject indic;
     public int X, Y;
     //idée pour indiquer les cases : faire en objet en utilisant technique de la bougie

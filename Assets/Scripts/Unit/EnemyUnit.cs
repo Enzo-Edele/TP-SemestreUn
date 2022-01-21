@@ -216,6 +216,7 @@ public class EnemyUnit : MonoBehaviour
             GameManager.Instance.enemyUnits.Remove(this);
             UIManager.Instance.UnSelect();
             GameManager.Instance.CheckEnemyCount();
+            grid.grid[(int)transform.position.x, (int)transform.position.z].SetBlocker(false);
             Destroy(gameObject);
         }
         //DisplayInfo();

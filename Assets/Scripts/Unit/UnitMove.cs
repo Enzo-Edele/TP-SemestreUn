@@ -48,6 +48,7 @@ public class UnitMove : MonoBehaviour
                 anim.SetTrigger("WalkCycle");
             }
         }
+        //mettre un truc pour react le bouton move un bool plus la list
 
         //oriente l'unité dans le sens du déplacement
         if (posA != null && posA != transform.position)
@@ -101,6 +102,7 @@ public class UnitMove : MonoBehaviour
             }
             CleanFreeCell();
             this.gameObject.GetComponent<AllyUnit>().DisplayInfo();
+            //deact boutonMove (si jamais on select autre pendant move y faut react button)
         }
     }
     public void FreeCell()

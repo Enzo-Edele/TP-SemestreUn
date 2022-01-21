@@ -45,8 +45,9 @@ public class AllyUnit : MonoBehaviour
         if(HP < 1)
         {
             UIManager.Instance.UnSelect();
-            GameManager.Instance.playerUnits.RemoveAt(orderInList);
+            GameManager.Instance.playerUnits.Remove(this);
             GameManager.Instance.CheckAllyCount();
+            this.gameObject.GetComponent<UnitMove>().grid.grid[(int)transform.position.x, (int)transform.position.z].SetBlocker(false);
             Destroy(gameObject);
         }
         DisplayInfo();

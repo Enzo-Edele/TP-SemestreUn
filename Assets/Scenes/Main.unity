@@ -16378,10 +16378,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 0.3399687, b: 0, a: 1}
+    m_HighlightedColor: {r: 0.9056604, g: 0.31964484, b: 0, a: 1}
+    m_PressedColor: {r: 0.764151, g: 0.26071033, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0.34117648, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -36935,10 +36935,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+    m_HighlightedColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+    m_PressedColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
+    m_SelectedColor: {r: 0.40392157, g: 0.40392157, b: 0.40392157, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -42212,7 +42212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -53005,7 +53005,7 @@ PrefabInstance:
       objectReference: {fileID: 516979625}
     - target: {fileID: 8386747842335222431, guid: 3f6d2ce30c1cb384fa9cbce761e8f5c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.99
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8386747842335222431, guid: 3f6d2ce30c1cb384fa9cbce761e8f5c8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -53013,7 +53013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8386747842335222431, guid: 3f6d2ce30c1cb384fa9cbce761e8f5c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.98
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8386747842335222431, guid: 3f6d2ce30c1cb384fa9cbce761e8f5c8, type: 3}
       propertyPath: m_LocalRotation.x

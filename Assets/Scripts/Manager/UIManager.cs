@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Button nextTurnButon;
     [SerializeField] GameObject playerButon;
+    [SerializeField] Button moveButon;
     [SerializeField] GameObject tutoPannel;
     [SerializeField] Text tutoText;
     [SerializeField] GameObject alienTurnText;
@@ -24,6 +25,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject gameOverText;
     [SerializeField] GameObject winPannel;
     [SerializeField] GameObject winText;
+
+    float timeMove = 2.5f;
+    public float timerMove = 0;
     public static UIManager Instance { get; private set; }
     void Awake()
     {
@@ -32,7 +36,10 @@ public class UIManager : MonoBehaviour
     
     void Update()
     {
-        
+        if (timerMove != 0)
+            timerMove -= Time.deltaTime;
+        if(timerMove < 0)
+            ReactivateMove();
     }
     public void Select(string name, int HP, int HPMax, int PA, int PAMax, int attRange, int att, int mov)
     {
@@ -82,6 +89,16 @@ public class UIManager : MonoBehaviour
     {
         if (winPannel != null) winPannel.SetActive(false);
         if (winText != null) winText.SetActive(false);
+    }
+    public void DeactivateMove()
+    {
+        moveButon.interactable = false;
+        timerMove = timeMove;
+    }
+    public void ReactivateMove()
+    {
+        moveButon.interactable = true;
+        timerMove = 0;
     }
     public void ButtonNextTurn()
     {

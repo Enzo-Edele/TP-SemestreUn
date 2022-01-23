@@ -101,6 +101,7 @@ public class UnitMove : MonoBehaviour
                 anim.SetTrigger("WalkCycle");
             }
             CleanFreeCell();
+            UIManager.Instance.DeactivateMove();
             this.gameObject.GetComponent<AllyUnit>().DisplayInfo();
             //deact boutonMove (si jamais on select autre pendant move y faut react button)
         }

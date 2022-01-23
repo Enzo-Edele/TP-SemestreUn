@@ -51275,6 +51275,7 @@ MonoBehaviour:
   move: {fileID: 1855655468}
   nextTurnButon: {fileID: 594935235}
   playerButon: {fileID: 1011508207}
+  moveButon: {fileID: 1913183116}
   tutoPannel: {fileID: 788080294}
   tutoText: {fileID: 1378024986}
   alienTurnText: {fileID: 1111822945}
@@ -51282,6 +51283,7 @@ MonoBehaviour:
   gameOverText: {fileID: 564404347}
   winPannel: {fileID: 1204897980}
   winText: {fileID: 1456555891}
+  timerMove: 0
 --- !u!4 &1679273079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3725001649029512098, guid: ccb1a060a0c1d2a47b1002ec2373c513, type: 3}
